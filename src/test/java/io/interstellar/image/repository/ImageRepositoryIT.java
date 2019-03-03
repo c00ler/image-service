@@ -1,6 +1,7 @@
 package io.interstellar.image.repository;
 
 import io.interstellar.image.AbstractIT;
+import io.interstellar.image.exception.ImageNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,7 +48,8 @@ class ImageRepositoryIT extends AbstractIT {
                 "T33UUP_20180804T100031_B13.tif"};
 
         assertThatThrownBy(() -> underTest.findFiles(names))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(ImageNotFoundException.class)
+                .hasMessageContaining("T33UUP_20180804T100031_B13.tif");
     }
 
 }

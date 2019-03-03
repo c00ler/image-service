@@ -1,5 +1,6 @@
 package io.interstellar.image.repository;
 
+import io.interstellar.image.exception.ImageNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,20 +28,26 @@ public class ImageRepository {
         final Set<String> uniqueNames = Arrays.stream(names).collect(Collectors.toSet());
         Validate.isTrue(uniqueNames.stream().allMatch(n -> n.endsWith(".tif")), "Only tif files supported");
 
+        final Collection<File> images;
         try (final Stream<Path> stream = Files.list(dataDirectory)) {
-            final List<File> images = stream
+            images = stream
                     .filter(p -> Files.isRegularFile(p) && uniqueNames.contains(toFilename(p)))
                     .map(Path::toFile)
                     .collect(Collectors.toList());
-
-            if (images.size() != uniqueNames.size()) {
-                throw new IllegalStateException("Not found");
-            }
-
-            return images;
         } catch (IOException e) {
             throw new UncheckedIOException("Exception while searching files", e);
         }
+
+        if (images.size() != uniqueNames.size()) {
+            final Set<String> found = images.stream().map(File::getName).collect(Collectors.toSet());
+            throw uniqueNames.stream()
+                    .filter(n -> !found.contains(n))
+                    .findFirst()
+                    .map(n -> new ImageNotFoundException("Image '%s' not found", n))
+                    .orElseThrow(() -> new IllegalStateException("Unable to find images"));
+        }
+
+        return images;
     }
 
     private static String toFilename(final Path path) {
