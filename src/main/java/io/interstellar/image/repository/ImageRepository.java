@@ -42,7 +42,7 @@ public class ImageRepository {
                         .orElseGet(Collections::emptySet);
 
         if (images.isEmpty()) {
-            throw new ImageNotFoundException("No images found for the prefix: '%s'", prefix);
+            throw new ImageNotFoundException("No images found with the prefix: '%s'", prefix);
         }
 
         // Find images for a given channels
@@ -52,7 +52,7 @@ public class ImageRepository {
                     final File file = getFileForChannel(images, c);
                     if (file == null) {
                         throw new ImageNotFoundException(
-                                "No images found for the prefix '%s' and channel '%d'", prefix, c);
+                                "No images found with the prefix '%s' and channel '%d'", prefix, c);
                     }
                     return file;
                 }).collect(Collectors.toSet());
