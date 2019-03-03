@@ -39,4 +39,15 @@ class ImageRepositoryIT extends AbstractIT {
         assertThat(files).hasSize(3).allMatch(File::isFile);
     }
 
+    @Test
+    void findFilesShouldThrowIfNotAllFilesFound() {
+        final String[] names = new String[]{
+                "T33UUP_20180804T100031_B02.tif",
+                "T33UUP_20180804T100031_B03.tif",
+                "T33UUP_20180804T100031_B13.tif"};
+
+        assertThatThrownBy(() -> underTest.findFiles(names))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
 }
