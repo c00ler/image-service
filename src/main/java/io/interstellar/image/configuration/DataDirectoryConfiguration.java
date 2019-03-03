@@ -9,13 +9,14 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
 
 @Configuration
 @Slf4j
 public class DataDirectoryConfiguration {
 
     @Bean
-    public File dataDirectory(@Value("${data.directory}") final String dataDirectory) throws FileNotFoundException {
+    public Path dataDirectory(@Value("${data.directory}") final String dataDirectory) throws FileNotFoundException {
         final File dataDirectoryFile = ResourceUtils.getFile(dataDirectory);
 
         Validate.validState(dataDirectoryFile.exists(), "Directory '%s' does not exist", dataDirectory);
@@ -23,7 +24,7 @@ public class DataDirectoryConfiguration {
 
         LOG.info("Data directory: {}", dataDirectoryFile.getAbsolutePath());
 
-        return dataDirectoryFile;
+        return dataDirectoryFile.toPath();
     }
 
 }
