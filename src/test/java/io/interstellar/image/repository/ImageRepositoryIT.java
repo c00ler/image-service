@@ -2,6 +2,7 @@ package io.interstellar.image.repository;
 
 import io.interstellar.image.AbstractIT;
 import io.interstellar.image.exception.ImageNotFoundException;
+import io.interstellar.image.model.ChannelMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,39 +18,21 @@ class ImageRepositoryIT extends AbstractIT {
     private ImageRepository underTest;
 
     @Test
-    void findFilesShouldThrowIfNotAllNamesAreTif() {
-        final String[] names = new String[]{
-                "T33UUP_20180804T100031_B01.tif",
-                "T33UUP_20180804T100031_B02.tif",
-                "T33UUP_20180804T100031_B03.jpg"};
+    void findImagesShouldThrowIfNoFilesFoundForPrefix() {
+        final String prefix = "T33UUP_20180805T";
 
-        assertThatThrownBy(() -> underTest.findFiles(names))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Only tif");
-    }
-
-    @Test
-    void findFilesShouldFindAllRequestFiles() {
-        final String[] names = new String[]{
-                "T33UUP_20180804T100031_B02.tif",
-                "T33UUP_20180804T100031_B03.tif",
-                "T33UUP_20180804T100031_B04.tif"};
-
-        final Collection<File> files = underTest.findFiles(names);
-
-        assertThat(files).hasSize(3).allMatch(File::isFile);
-    }
-
-    @Test
-    void findFilesShouldThrowIfNotAllFilesFound() {
-        final String[] names = new String[]{
-                "T33UUP_20180804T100031_B02.tif",
-                "T33UUP_20180804T100031_B03.tif",
-                "T33UUP_20180804T100031_B13.tif"};
-
-        assertThatThrownBy(() -> underTest.findFiles(names))
+        assertThatThrownBy(() -> underTest.findImages(prefix, ChannelMap.VISIBLE))
                 .isInstanceOf(ImageNotFoundException.class)
-                .hasMessageContaining("T33UUP_20180804T100031_B13.tif");
+                .hasMessageContaining("No images found")
+                .hasMessageContaining(prefix);
+    }
+
+    @Test
+    void findImagesShouldFindAllRequestFiles() {
+        final Collection<File> files = underTest.findImages("T33UUP_20180804T", ChannelMap.VISIBLE);
+
+        assertThat(files).extracting(File::getName).containsExactlyInAnyOrder(
+                "T33UUP_20180804T100031_B02.tif", "T33UUP_20180804T100031_B03.tif", "T33UUP_20180804T100031_B04.tif");
     }
 
 }
