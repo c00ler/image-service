@@ -1,12 +1,12 @@
 package io.interstellar.image.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.base.CaseFormat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 public enum ChannelMap {
@@ -19,6 +19,8 @@ public enum ChannelMap {
 
     private static final Set<ChannelMap> VALUES = EnumSet.allOf(ChannelMap.class);
 
+    private final String value;
+
     private final Integer red;
 
     private final Integer green;
@@ -26,6 +28,8 @@ public enum ChannelMap {
     private final Integer blue;
 
     ChannelMap(final Integer red, final Integer green, final Integer blue) {
+        this.value = CaseFormat.UPPER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL).convert(name());
+
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -46,27 +50,16 @@ public enum ChannelMap {
         return blue;
     }
 
-    public Collection<Integer> channels() {
-        final Collection<Integer> result = new LinkedList<>();
-
-        if (red != null) {
-            result.add(red);
-        }
-        if (green != null) {
-            result.add(green);
-        }
-        if (blue != null) {
-            result.add(blue);
-        }
-
-        return result;
+    @JsonValue
+    public String getValue() {
+        return value;
     }
 
     @JsonCreator
     @Nonnull
     public static ChannelMap fromString(@Nonnull final String value) {
         for (final ChannelMap channelMap : VALUES) {
-            if (channelMap.name().equalsIgnoreCase(value)) {
+            if (channelMap.getValue().equals(value)) {
                 return channelMap;
             }
         }

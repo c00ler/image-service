@@ -1,7 +1,6 @@
 package io.interstellar.image.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.hash.Hashing;
 import io.interstellar.image.AbstractIT;
 import io.interstellar.image.controller.dto.GenerateImageRequestDto;
 import io.interstellar.image.model.ChannelMap;
@@ -110,6 +109,37 @@ class ImageControllerIT extends AbstractIT {
                         .body().asByteArray();
 
         assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("0427e6ee4303ff63e33426f85be19a7a");
+    }
+
+    @Test
+    void shouldGenerateImageForWaterVaporChannel() throws Exception {
+        final GenerateImageRequestDto requestBodyDto =
+                new GenerateImageRequestDto()
+                        .setUtmZone(33)
+                        .setLatitudeBand(LatitudeBand.U)
+                        .setGridSquare(GridSquare.UP)
+                        .setDate(LocalDate.of(2018, Month.AUGUST, 4))
+                        .setChannelMap(ChannelMap.WATER_VAPOR);
+
+        final int expectedSize = 9510;
+
+        final byte[] response =
+                given()
+                        .accept(ContentType.ANY)
+                        .contentType(ContentType.JSON)
+                        .body(mapper.writeValueAsString(requestBodyDto))
+                        .when()
+                        .post("/generate-images")
+                        .then()
+                        .log().status()
+                        .log().headers()
+                        .statusCode(200)
+                        .header(HttpHeaders.CONTENT_TYPE, equalTo(MediaType.IMAGE_JPEG_VALUE))
+                        .header(HttpHeaders.CONTENT_LENGTH, equalTo(Integer.toString(expectedSize)))
+                        .extract()
+                        .body().asByteArray();
+
+        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("d6f3b1c33c59c5669cac67e625e2f339");
     }
 
 }

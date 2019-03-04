@@ -1,5 +1,6 @@
 package io.interstellar.image.model;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -13,6 +14,11 @@ class ChannelMapTest {
         assertThat(underTest.red()).isEqualTo(red);
         assertThat(underTest.green()).isEqualTo(green);
         assertThat(underTest.blue()).isEqualTo(blue);
+    }
+
+    @Test
+    void shouldCreateFromCamelCaseValue() {
+        assertThat(ChannelMap.fromString("waterVapor")).isEqualTo(ChannelMap.WATER_VAPOR);
     }
 
 }

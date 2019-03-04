@@ -61,8 +61,6 @@ public class GDALInvoker {
             if (result.getExitValue() != SUCCESS) {
                 throw new GDALInvocationException(command, result.getExitValue());
             }
-
-
         } catch (IOException | InterruptedException | TimeoutException e) {
             throw new GDALInvocationException(command, e);
         }
@@ -78,7 +76,9 @@ public class GDALInvoker {
         final File jpgFile = uncheckedCreateTempFile(JPG_FILE_SUFFIX);
 
         invoke(GDAL_TRANSLATE_COMMAND,
-                "-of", "jpeg", "-ot", "byte", "-scale", "0", "15000", "-exponent", "0.5",
+                "-of", "jpeg", "-ot", "byte",
+                "-scale", "0", "15000",
+                "-exponent", "0.5",
                 vrtFile.getAbsolutePath(), jpgFile.getAbsolutePath());
 
         return jpgFile;
@@ -92,7 +92,18 @@ public class GDALInvoker {
      * @see io.interstellar.image.model.ChannelMap#WATER_VAPOR
      */
     public File generateImageFromSingleChannel(@Nonnull final File channelFile) {
-        return null;
+        final File jpgFile = uncheckedCreateTempFile(JPG_FILE_SUFFIX);
+
+        invoke(GDAL_TRANSLATE_COMMAND,
+                "-of", "jpeg", "-ot", "byte",
+                "-b", "1", "-b", "1", "-b", "1",
+                "-scale_1", "0", "50000", "0", "0",
+                "-scale_2", "0", "50000", "0", "0",
+                "-scale_3", "0", "15000",
+                "-exponent_3", "0.5",
+                channelFile.getAbsolutePath(), jpgFile.getAbsolutePath());
+
+        return jpgFile;
     }
 
     private static File uncheckedCreateTempFile(final String suffix) {
