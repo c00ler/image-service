@@ -25,6 +25,8 @@
 
         <jsr305.version>3.0.2</jsr305.version>
         <guava.version>27.0.1-jre</guava.version>
+        <zt-exec.version>1.10</zt-exec.version>
+        <commons-io.version>2.6</commons-io.version>
 
         <!-- Test dependencies -->
         <rest-assured.version>3.3.0</rest-assured.version>
@@ -55,9 +57,21 @@
         </dependency>
 
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+            <version>${zt-exec.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

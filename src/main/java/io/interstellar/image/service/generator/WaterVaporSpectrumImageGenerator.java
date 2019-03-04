@@ -1,22 +1,14 @@
 package io.interstellar.image.service.generator;
 
 import io.interstellar.image.model.ChannelMap;
+import io.interstellar.image.service.GDALInvoker;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.Collection;
 
 @Component
 public class WaterVaporSpectrumImageGenerator extends AbstractSpectrumImageGenerator {
 
-    public WaterVaporSpectrumImageGenerator() {
-        super(ChannelMap.WATER_VAPOR);
-    }
-
-    @Override
-    public final byte[] generate(@Nonnull final Collection<File> images) {
-        return new byte[0];
+    public WaterVaporSpectrumImageGenerator(final GDALInvoker gdalInvoker) {
+        super(gdalInvoker, ChannelMap.WATER_VAPOR);
     }
 
 }
