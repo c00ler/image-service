@@ -59,7 +59,7 @@ class ImageControllerIT extends AbstractIT {
                         .setDate(LocalDate.of(2018, Month.AUGUST, 4))
                         .setChannelMap(ChannelMap.VISIBLE);
 
-        final int expectedSize = 873002;
+        final int expectedSize = 745083;
 
         final byte[] response =
                 given()
@@ -77,7 +77,7 @@ class ImageControllerIT extends AbstractIT {
                         .extract()
                         .body().asByteArray();
 
-        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("90469388b80fdc27e407d11580bbd380");
+        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("44e58fc1e64dc59d17792cafdcf8f14e");
     }
 
     @Test
@@ -90,7 +90,7 @@ class ImageControllerIT extends AbstractIT {
                         .setDate(LocalDate.of(2018, Month.AUGUST, 4))
                         .setChannelMap(ChannelMap.VEGETATION);
 
-        final int expectedSize = 275502;
+        final int expectedSize = 225509;
 
         final byte[] response =
                 given()
@@ -108,7 +108,7 @@ class ImageControllerIT extends AbstractIT {
                         .extract()
                         .body().asByteArray();
 
-        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("0427e6ee4303ff63e33426f85be19a7a");
+        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("6aab963ef623d23db2103b7ddaa2b79a");
     }
 
     @Test
@@ -121,7 +121,7 @@ class ImageControllerIT extends AbstractIT {
                         .setDate(LocalDate.of(2018, Month.AUGUST, 4))
                         .setChannelMap(ChannelMap.WATER_VAPOR);
 
-        final int expectedSize = 9510;
+        final int expectedSize = 9064;
 
         final byte[] response =
                 given()
@@ -139,7 +139,7 @@ class ImageControllerIT extends AbstractIT {
                         .extract()
                         .body().asByteArray();
 
-        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("d6f3b1c33c59c5669cac67e625e2f339");
+        assertThat(DigestUtils.md5DigestAsHex(response)).isEqualTo("ba8a5180882d9f1d0c5982d4fa9b57f4");
     }
 
 }

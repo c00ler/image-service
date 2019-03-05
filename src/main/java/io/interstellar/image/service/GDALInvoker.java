@@ -77,8 +77,7 @@ public class GDALInvoker {
 
         invoke(GDAL_TRANSLATE_COMMAND,
                 "-of", "jpeg", "-ot", "byte",
-                "-scale", "0", "15000",
-                "-exponent", "0.5",
+                "-scale", "-exponent", "0.4",
                 vrtFile.getAbsolutePath(), jpgFile.getAbsolutePath());
 
         return jpgFile;
@@ -97,10 +96,9 @@ public class GDALInvoker {
         invoke(GDAL_TRANSLATE_COMMAND,
                 "-of", "jpeg", "-ot", "byte",
                 "-b", "1", "-b", "1", "-b", "1",
-                "-scale_1", "0", "50000", "0", "0",
-                "-scale_2", "0", "50000", "0", "0",
-                "-scale_3", "0", "15000",
-                "-exponent_3", "0.5",
+                "-scale_1", "0", "65000", "0", "0",
+                "-scale_2", "0", "65000", "0", "0",
+                "-scale_3", "-exponent_3", "0.4",
                 channelFile.getAbsolutePath(), jpgFile.getAbsolutePath());
 
         return jpgFile;
