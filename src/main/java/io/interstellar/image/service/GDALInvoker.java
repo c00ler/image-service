@@ -12,6 +12,7 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @Component
@@ -56,7 +57,10 @@ public class GDALInvoker {
         commandWithArguments.addAll(arguments);
 
         try {
-            final ProcessResult result = new ProcessExecutor(commandWithArguments).execute();
+            final ProcessResult result =
+                    new ProcessExecutor(commandWithArguments)
+                            .timeout(15L, TimeUnit.SECONDS)
+                            .execute();
 
             if (result.getExitValue() != SUCCESS) {
                 throw new GDALInvocationException(command, result.getExitValue());

@@ -51,3 +51,21 @@ Try calling the service using the following command:
 ```bash
 http --verbose :8080/generate-images utmZone=33 latitudeBand=U gridSquare=UP date="2018-08-04" channelMap=vegetation
 ```
+
+## How to run service in docker
+
+For easier testing it's possible to run service in docker. 
+First build an image:
+
+```bash
+docker build -t image-service:latest .
+```
+
+**First run may take some time. Provided image is not optimized for any kind of workload 
+and can only be used for testing.**
+
+Start the container using the following command:
+
+```bash
+docker run --rm -it -v <path_to_directory_with_images>:/tmp/granules -p 8080:8080 image-service:latest
+```
