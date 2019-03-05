@@ -35,7 +35,7 @@ Run it using the following command:
 java -Ddata.directory=<path_to_directory_with_images> -jar target/service.jar
 ```
 
-By default server is running on the port `8080`.
+By default server is running on port `8080`.
 
 
 ## How to run service with sample data
