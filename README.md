@@ -69,3 +69,13 @@ Start the container using the following command:
 ```bash
 docker run --rm -it -v <path_to_directory_with_images>:/tmp/granules -p 8080:8080 image-service:latest
 ```
+
+## Known issues
+
+Sometimes `gdal_translate` hangs when trying to generate an image for `visible` channel from `vrt` file.
+As an alternative it's possible to switch to `gdal_merge.py` to generate an intermediate representation.
+It can be done using the following property `use.gdal.merge=true` in `application.properties` or via 
+system property `-Duse.gdal.merge=true`. 
+
+Usage of `gdal_merge.py` requires additional packages to be installed on a host system and in general
+it makes the process slower. For this reason it's a configurable option. 
