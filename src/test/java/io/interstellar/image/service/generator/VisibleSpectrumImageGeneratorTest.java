@@ -37,7 +37,7 @@ class VisibleSpectrumImageGeneratorTest {
                 .hasMessageContaining(Integer.toString(ChannelMap.VISIBLE.green()));
 
         verify(gdalInvokerMock, never()).mergeChannels(any(), any(), any());
-        verify(gdalInvokerMock, never()).generateImageFromVRT(any());
+        verify(gdalInvokerMock, never()).generateImage(any());
     }
 
 }

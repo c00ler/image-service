@@ -46,17 +46,19 @@ abstract class AbstractSpectrumImageGenerator implements SpectrumImageGenerator 
         final File greenChannel = getFileForChannel(images, channelMap().green());
         final File blueChannel = getFileForChannel(images, channelMap().blue());
 
-        final File vrtFile = gdalInvoker.mergeChannels(redChannel, greenChannel, blueChannel);
-        LOG.info("vrt file successfully generated: {}", vrtFile.getAbsolutePath());
-
         final Stopwatch stopwatch = Stopwatch.createStarted();
-        final File jpgFile = gdalInvoker.generateImageFromVRT(vrtFile);
+        final File mergedChannelsFile = gdalInvoker.mergeChannels(redChannel, greenChannel, blueChannel);
+        LOG.info("intermediate file successfully generated in {} ms: {}",
+                stopwatch.elapsed(TimeUnit.MILLISECONDS), mergedChannelsFile.getAbsolutePath());
+
+        stopwatch.reset();
+        final File jpgFile = gdalInvoker.generateImage(mergedChannelsFile);
         LOG.info("jpg file successfully generated in {} ms: {}",
                 stopwatch.elapsed(TimeUnit.MILLISECONDS), jpgFile.getAbsolutePath());
 
         final byte[] bytes = toBytes(jpgFile);
 
-        FileUtils.deleteQuietly(vrtFile);
+        FileUtils.deleteQuietly(mergedChannelsFile);
         FileUtils.deleteQuietly(jpgFile);
 
         return bytes;
